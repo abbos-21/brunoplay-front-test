@@ -26,8 +26,7 @@ onMounted(() => {
   <div class="my-4 flex flex-col gap-4 overflow-y-scroll scrollbar-hide">
     <AdsgramTask
       :blockId="taskBlockId"
-      :debug="true"
-      :debug-console="true"
+      :debug="false"
       class="task"
       :onReward="handleReward"
       :onError="handleError"
