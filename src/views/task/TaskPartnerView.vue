@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { AdsgramTask } from '@adsgram/vue'
-import WebApp from '@twa-dev/sdk'
 
 const taskBlockId = import.meta.env.VITE_TASK_BLOCK_ID
 
@@ -14,12 +13,8 @@ const handleError = (event: CustomEvent<string>) => {
 }
 
 const rawHtml = ref<string>(
-  "<span slot='reward' class='task__reward'>1000 coins</span><div slot='button' class='task__button'>go</div><div slot='claim' class='task__claim'>claim</div><div slot='done' className='task__done'>done</div>",
+  "<span slot='reward' style='font-size: 14px;'>🪙 1000</span><div slot='button' class='background-color: #ffac33; color: white;'>go</div><div slot='claim' class=''>claim</div><div slot='done' className='task__done'>done</div>",
 )
-
-onMounted(() => {
-  WebApp.ready()
-})
 </script>
 
 <template>
