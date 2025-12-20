@@ -17,7 +17,8 @@ button {
   --adsgram-task-button-width: 60px;
   --adsgram-task-icon-border-radius: 12px;
 
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
   padding: 8px;
   border-radius: 12px;
