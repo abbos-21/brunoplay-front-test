@@ -27,7 +27,7 @@ button {
   color: #525252;
 }
 
-/* .task__reward {
+.task__reward {
   margin: 5px 0 0 0;
   font-size: 14px;
 }
@@ -47,4 +47,4 @@ button {
 .task__button_done {
   margin-left: 0;
   background-color: #007539;
-} */
+}

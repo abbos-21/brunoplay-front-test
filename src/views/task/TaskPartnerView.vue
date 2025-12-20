@@ -13,7 +13,7 @@ const handleError = (event: CustomEvent<string>) => {
 }
 
 const rawHtml = ref<string>(
-  "<span slot='reward' className='task__reward'>1000 coins</span><div slot='button' className='task__button'>go</div><div slot='claim' className='task__button_claim'>claim</div><div slot='done' className='task__button_done'>done</div>",
+  "<span slot='reward' class='task__reward'>1000 coins</span><div slot='button' class='task__button'>go</div><div slot='claim' class='task__button task__button_claim'>claim</div><div slot='done' className='task__button task__button_done'>done</div>",
 )
 </script>
 
