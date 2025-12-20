@@ -13,7 +13,7 @@ const handleError = (event: CustomEvent<string>) => {
 }
 
 const rawHtml = ref<string>(
-  "<span slot='reward' style='font-size: 14px;'>🪙 100</span><div slot='button' style='background-color: #ffac33; color: white; border-radius: 6px; padding: 4px; font-weight: bold; margin-left: 4px;'>Go</div><div slot='claim' class=''>claim</div><div slot='done' className=''>done</div>",
+  "<span slot='reward' style='font-size: 14px; display: flex; align-items: center; gap: 2px;'><img src='/src/assets/images/winter/coin.png' style='width: 8px; height: 8px;' alt='coin-image' /> 100</span><div slot='button' style='background-color: #ffac33; color: white; border-radius: 6px; padding: 4px; font-weight: bold; margin-left: 4px;'>Go</div><div slot='claim' class=''>claim</div><div slot='done' className=''>done</div>",
 )
 </script>
 
