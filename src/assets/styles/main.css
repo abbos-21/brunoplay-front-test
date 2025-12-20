@@ -11,25 +11,19 @@ button {
 }
 
 .task {
-  --adsgram-task-font-size: 16px; /* min 14px */
-  --adsgram-task-icon-size: 48px; /* min 30px */
-  --adsgram-task-icon-title-gap: 8px; /* min 5px max 40px */
-  --adsgram-task-button-width: 60px; /* min 40px */
+  --adsgram-task-font-size: 16px;
+  --adsgram-task-icon-size: 48px;
+  --adsgram-task-icon-title-gap: 8px;
+  --adsgram-task-button-width: 60px;
   --adsgram-task-icon-border-radius: 12px;
-
-  --adsgram-task-button-bg: #50a8eb;
-  --adsgram-task-claim-button-bg: #ee941c;
-  --adsgram-task-done-button-bg: #007539;
-
-  --adsgram-task-button-radius: 8px;
-  --adsgram-task-button-padding: 6px 12px;
 
   display: block;
   width: 100%;
   padding: 8px;
   border-radius: 12px;
   background-color: rgba(179, 223, 220, 0.75);
-  font-family: Roboto;
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
   color: #525252;
 }
 
