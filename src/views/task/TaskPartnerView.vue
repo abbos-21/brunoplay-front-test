@@ -15,7 +15,7 @@ const handleError = (event: CustomEvent<string>) => {
 <template>
   <AdsgramTask
     :blockId="taskBlockId"
-    debug
+    :debug="false"
     class="task"
     :onReward="handleReward"
     :onError="handleError"
