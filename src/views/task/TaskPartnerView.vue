@@ -13,7 +13,7 @@ const handleError = (event: CustomEvent<string>) => {
 }
 
 const rawHtml = ref<string>(
-  "<span slot='reward' class='task__reward'>1000 coins</span><div slot='button' class='task__button'>go</div><div slot='claim' class='task__button task__button_claim'>claim</div><div slot='done' className='task__button task__button_done'>done</div>",
+  "<span slot='reward' class='task__reward'>1000 coins</span><div slot='button' class='task__button'>go</div><div slot='claim' class='task__claim'>claim</div><div slot='done' className='task__done'>done</div>",
 )
 </script>
 
@@ -22,6 +22,7 @@ const rawHtml = ref<string>(
     <AdsgramTask
       :blockId="taskBlockId"
       :debug="true"
+      :debug-console="true"
       class="task"
       :onReward="handleReward"
       :onError="handleError"

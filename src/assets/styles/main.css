@@ -27,6 +27,12 @@ button {
   color: #525252;
 }
 
+.task p span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .task__reward {
   margin: 5px 0 0 0;
   font-size: 14px;
@@ -39,12 +45,21 @@ button {
   padding: 6px 12px;
 }
 
-.task__button_claim {
+.task__claim {
+  /* margin-left: 0;
+  background-color: #ee941c; */
   margin-left: 0;
-  background-color: #ee941c;
+  background-color: #50a8eb;
+  border-radius: 5px;
+  padding: 6px 12px;
 }
 
-.task__button_done {
+.task__done {
+  /* margin-left: 0;
+  background-color: #007539; */
+
   margin-left: 0;
   background-color: #007539;
+  border-radius: 5px;
+  padding: 6px 12px;
 }
