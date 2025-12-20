@@ -1,0 +1,12 @@
+// Icon exports
+export { default as CoinIcon } from './coin.svg'
+export { default as WidthdrawIcon } from './widthdraw.svg'
+export { default as CloseIcon } from './close-icon.svg'
+export { default as LeftArrowIcon } from './left-arrow.svg'
+export { default as RightArrowIcon } from './right-arrow.svg'
+export { default as AdIcon } from './ad-icon.svg'
+export { default as MoneyBagIcon } from './money-bag.svg'
+export { default as PostBuildingIcon } from './post-building.svg'
+export { default as MealIcon } from './meal.svg'
+export { default as ImmuneIcon } from './immune.svg'
+export { default as GamepadIcon } from './gamepad.svg'
