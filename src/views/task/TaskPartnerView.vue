@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { AdsgramTask } from '@adsgram/vue'
 
 const taskBlockId = import.meta.env.VITE_TASK_BLOCK_ID
@@ -10,6 +11,10 @@ const handleReward = () => {
 const handleError = (event: CustomEvent<string>) => {
   console.error('Task error:', event.detail)
 }
+
+const rawHtml = ref<string>(
+  "<span slot='reward' className='task__reward'>1000 coins</span><div slot='button' className='task__button'>go</div><div slot='claim' className='task__button_claim'>claim</div><div slot='done' className='task__button_done'>done</div>",
+)
 </script>
 
 <template>
@@ -20,19 +25,8 @@ const handleError = (event: CustomEvent<string>) => {
       class="task"
       :onReward="handleReward"
       :onError="handleError"
+      v-html="rawHtml"
     >
-      <template v-slot:reward>
-        <span className="task__reward">1000 coins</span>
-      </template>
-      <template v-slot:button>
-        <div className="task__button">go</div>
-      </template>
-      <template v-slot:claim>
-        <div className="task__button_claim">claim</div>
-      </template>
-      <template v-slot:done>
-        <div className="task__button_done">done</div>
-      </template>
     </AdsgramTask>
   </div>
 </template>
