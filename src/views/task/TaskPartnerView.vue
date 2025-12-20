@@ -25,8 +25,8 @@ const rawHtml = ref<string>(
       class="task"
       :onReward="handleReward"
       :onError="handleError"
+      v-html="rawHtml"
     >
-      <template v-html="rawHtml"></template>
     </AdsgramTask>
   </div>
 </template>
