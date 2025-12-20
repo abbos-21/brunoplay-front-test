@@ -15,7 +15,7 @@ const handleError = (event: CustomEvent<string>) => {
 <template>
   <AdsgramTask
     :blockId="taskBlockId"
-    :debug="false"
+    :debug="true"
     class="task"
     :onReward="handleReward"
     :onError="handleError"
@@ -29,39 +29,11 @@ const handleError = (event: CustomEvent<string>) => {
     </template>
 
     <template #claim>
-      <div class="task__button task__button--claim">Claim</div>
+      <div class="task__button task__button_claim">Claim</div>
     </template>
 
     <template #done>
-      <div class="task__button task__button--done">Done</div>
+      <div class="task__button task__button_done">Done</div>
     </template>
   </AdsgramTask>
 </template>
-
-<style scoped>
-.task {
-  width: 100%;
-}
-
-.task__button {
-  padding: 10px 16px;
-  border-radius: 12px;
-  background: #4f46e5;
-  color: white;
-  text-align: center;
-  font-weight: 600;
-}
-
-.task__button--claim {
-  background: #16a34a;
-}
-
-.task__button--done {
-  background: #6b7280;
-}
-
-.task__reward {
-  font-weight: 700;
-  color: #facc15;
-}
-</style>
