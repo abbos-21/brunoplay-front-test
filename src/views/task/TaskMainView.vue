@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import WebApp from '@twa-dev/sdk'
 import { toast } from 'vue3-toastify'
 
@@ -106,6 +106,10 @@ onMounted(async () => {
   alert(result.value)
 
   await mountFetch()
+})
+
+onUnmounted(() => {
+  result.value = null
 })
 </script>
 
