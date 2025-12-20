@@ -27,7 +27,7 @@ button {
   color: #525252;
 }
 
-.task p {
+.task > p {
   width: calc(100% - 16px);
   overflow: hidden;
   text-overflow: ellipsis;
