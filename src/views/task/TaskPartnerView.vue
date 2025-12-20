@@ -13,10 +13,11 @@ const handleError = (event: CustomEvent<string>) => {
 }
 
 const rawHtml = ref<string>(
-  "<span slot='reward' style='font-size: 14px; display: flex; align-items: center; gap: 2px;'><img src='/coin.png' style='width: 8px; height: 8px;' alt='coin-image' /> 100</span><div slot='button' style='background-color: #ffac33; color: white; border-radius: 6px; padding: 4px; font-weight: bold; margin-left: 4px;'>Go</div><div slot='claim' class=''>claim</div><div slot='done' className=''>done</div>",
+  "<span slot='reward' style='font-size: 14px; display: flex; align-items: center; gap: 2px;'><img src='/coin.png' style='width: 14px; height: 14px;' alt='coin-image' /> 100</span><div slot='button' style='background-color: #ffac33; color: white; border-radius: 6px; padding: 4px; font-weight: bold; margin-left: 4px;'>Go</div><div slot='claim' class=''>claim</div><div slot='done' className=''>done</div>",
 )
 </script>
 
+<!-- eslint-disable -->
 <template>
   <div class="my-4 flex flex-col gap-4 overflow-y-scroll scrollbar-hide">
     <AdsgramTask
