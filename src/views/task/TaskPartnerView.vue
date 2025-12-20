@@ -20,17 +20,20 @@ const handleError = (event: CustomEvent<string>) => {
     :onReward="handleReward"
     :onError="handleError"
   >
-    <template v-slot:reward>
-      <span className="task__reward">1000 coins</span>
+    <template #reward>
+      <span class="task__reward">+100 coins</span>
     </template>
-    <template v-slot:button>
-      <div className="task__button">go</div>
+
+    <template #button>
+      <div class="task__button">Go</div>
     </template>
-    <template v-slot:claim>
-      <div className="task__button task__button_claim">claim</div>
+
+    <template #claim>
+      <div class="task__button task__button_claim">Claim</div>
     </template>
-    <template v-slot:done>
-      <div className="task__button task__button_done">done</div>
+
+    <template #done>
+      <div class="task__button task__button_done">Done</div>
     </template>
   </AdsgramTask>
 </template>
