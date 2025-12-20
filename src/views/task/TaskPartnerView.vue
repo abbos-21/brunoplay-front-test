@@ -4,6 +4,7 @@ import { AdsgramTask } from '@adsgram/vue'
 import { toast } from 'vue3-toastify'
 
 const taskBlockId = import.meta.env.VITE_TASK_BLOCK_ID
+const task2BlockId = 'task-19603'
 
 const handleReward = () => {
   toast.success('20 coins have been successfully added to your balance!')
@@ -23,6 +24,16 @@ const rawHtml = ref<string>(
   <div class="my-4 flex flex-col gap-4 overflow-y-scroll scrollbar-hide">
     <AdsgramTask
       :blockId="taskBlockId"
+      :debug="false"
+      class="task"
+      :onReward="handleReward"
+      :onError="handleError"
+      v-html="rawHtml"
+    >
+    </AdsgramTask>
+
+    <AdsgramTask
+      :blockId="task2BlockId"
       :debug="false"
       class="task"
       :onReward="handleReward"
