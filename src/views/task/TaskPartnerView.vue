@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { AdsgramTask } from '@adsgram/vue'
 
-const taskBlockId = import.meta.env.VITE_TASK_BLOCK_ID || 'task-19591'
+const taskBlockId = import.meta.env.VITE_TASK_BLOCK_ID
 
-const handleReward = (event: CustomEvent<string>): void => {
-  console.log('User earned reward:', event.detail)
+const handleReward = () => {
+  console.log('Reward confirmed by Adsgram')
 }
 
-const handleError = (event: CustomEvent<string>): void => {
+const handleError = (event: CustomEvent<string>) => {
   console.error('Task error:', event.detail)
 }
 </script>
@@ -15,27 +15,53 @@ const handleError = (event: CustomEvent<string>): void => {
 <template>
   <AdsgramTask
     :blockId="taskBlockId"
-    data-debug="true"
+    debug
     class="task"
     :onReward="handleReward"
     :onError="handleError"
   >
-    <template v-slot:reward>
-      <span className="task__reward">100 coins</span>
+    <template #reward>
+      <span class="task__reward">+100 coins</span>
     </template>
-    <template v-slot:button>
-      <div className="task__button">go</div>
+
+    <template #button>
+      <div class="task__button">Go</div>
     </template>
-    <template v-slot:claim>
-      <div className="task__button_claim">claim</div>
+
+    <template #claim>
+      <div class="task__button task__button--claim">Claim</div>
     </template>
-    <template v-slot:done>
-      <div className="task__button_done">done</div>
+
+    <template #done>
+      <div class="task__button task__button--done">Done</div>
     </template>
   </AdsgramTask>
 </template>
 
 <style scoped>
 .task {
+  width: 100%;
+}
+
+.task__button {
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: #4f46e5;
+  color: white;
+  text-align: center;
+  font-weight: 600;
+}
+
+.task__button--claim {
+  background: #16a34a;
+}
+
+.task__button--done {
+  background: #6b7280;
+}
+
+.task__reward {
+  font-weight: 700;
+  color: #facc15;
 }
 </style>
