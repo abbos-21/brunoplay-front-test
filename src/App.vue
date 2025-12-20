@@ -228,9 +228,9 @@ onBeforeUnmount(() => {
 <template>
   <!-- APP -->
 
-  <!-- <LoaderComponent v-if="loading" /> -->
+  <LoaderComponent v-if="loading" />
 
-  <!-- <div
+  <div
     v-else-if="authFailed"
     class="fixed inset-0 flex items-center justify-center z-50 px-4 bg-sky-400"
   >
@@ -249,9 +249,9 @@ onBeforeUnmount(() => {
 
       <p class="text-xs text-white mt-6">Works only in Telegram Mobile</p>
     </div>
-  </div> -->
+  </div>
 
-  <div class="app-container">
+  <div class="app-container" v-else>
     <audio
       ref="audioRef"
       loop
