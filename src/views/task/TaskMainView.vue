@@ -103,7 +103,6 @@ onMounted(async () => {
     import.meta.env.VITE_TASK_BLOCK_ID,
     import.meta.env.VITE_TASK_BLOCK_ID_2,
   )
-  alert(result.value)
 
   await mountFetch()
 })

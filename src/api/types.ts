@@ -221,6 +221,10 @@ export interface SeasonResponse {
   }
 }
 
+export interface InvoiceLinkResponse {
+  invoiceLink: string
+}
+
 export interface ApiError {
   response: {
     data: {

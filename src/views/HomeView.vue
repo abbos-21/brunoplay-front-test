@@ -191,9 +191,9 @@ const backgroundImage = computed(() => {
       </div>
 
       <div class="flex flex-col gap-2 items-end">
-        <div class="rounded-full bg-sky-400 px-2 py-1 border-4 border-sky-200">
+        <RouterLink to="/test" class="rounded-full bg-sky-400 px-2 py-1 border-4 border-sky-200">
           <p class="text-sm font-bold">Your level: {{ user?.level ?? 0 }}</p>
-        </div>
+        </RouterLink>
 
         <div
           class="w-10 h-10 flex justify-center items-center rounded-full bg-sky-400 border-4 border-sky-200"
