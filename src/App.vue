@@ -199,13 +199,13 @@ const bootstrapApp = async () => {
     }
 
     /* 2️⃣ Block enforcement */
-    if (blockedUsers.has(telegramId)) {
-      toast.error(
-        'Your access to our Telegram bot has been blocked for violating the terms of service.',
-      )
-      authFailed.value = true
-      return
-    }
+    // if (blockedUsers.has(telegramId)) {
+    //   toast.error(
+    //     'Your access to our Telegram bot has been blocked for violating the terms of service.',
+    //   )
+    //   authFailed.value = true
+    //   return
+    // }
 
     /* 3️⃣ Authenticate */
     await authenticate()
