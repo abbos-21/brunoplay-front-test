@@ -43,6 +43,8 @@ export interface User {
   lastWheelSpin: string | null
 
   withdrawals: Withdrawal[]
+
+  canPlayBox: boolean
 }
 
 export interface ApiResponse<T> {
@@ -223,6 +225,10 @@ export interface SeasonResponse {
 
 export interface InvoiceLinkResponse {
   invoiceLink: string
+}
+
+export interface BoxResponse {
+  user: User
 }
 
 export interface ApiError {

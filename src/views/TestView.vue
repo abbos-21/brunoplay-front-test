@@ -3,6 +3,13 @@ import { starsService } from '@/api/starsService'
 import { onMounted, ref } from 'vue'
 import { PopupBackgroundImage } from '@/assets/backgrounds/winter'
 import { BoxCoinButtonImage, BoxStarButtonImage, MenuItemBackground } from '@/assets/images/winter'
+import WebApp from '@twa-dev/sdk'
+import { boxService } from '@/api/boxService'
+import { toast } from 'vue3-toastify'
+import LoaderComponent from '@/components/LoaderComponent.vue'
+
+const loading = ref<boolean>(false)
+const canPlay = ref<boolean>(false)
 
 const invoiceLink = ref<string | null>(null)
 
@@ -13,6 +20,16 @@ async function getInvoiceLink() {
   } catch (error) {
     console.error('Failed to get invoice link:', error)
   }
+}
+
+function openInvoice() {
+  if (!invoiceLink.value) return
+
+  WebApp.openInvoice(invoiceLink.value, (status) => {
+    if (status === 'paid') {
+      alert('You paid!')
+    }
+  })
 }
 
 const rewards = [
@@ -63,8 +80,28 @@ function toggleFlip(card: { flipped: boolean }) {
   card.flipped = !card.flipped
 }
 
+async function payWithCoins() {
+  try {
+    loading.value = true
+    await boxService.payWithCoins()
+  } catch (error) {
+    console.log(error)
+  } finally {
+    const response = await boxService.getStatus()
+    canPlay.value = response.data.user.canPlayBox
+    loading.value = false
+  }
+}
+
 onMounted(async () => {
-  await getInvoiceLink()
+  try {
+    loading.value = true
+    await getInvoiceLink()
+    const response = await boxService.getStatus()
+    canPlay.value = response.data.user.canPlayBox
+  } catch (error) {
+    console.log(error)
+  }
 
   const N = 12
   const rewardList = generateRewards(rewards, N)
@@ -83,6 +120,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <LoaderComponent v-if="loading" />
   <div
     class="w-full h-full bg-cover bg-center bg-no-repeat p-2 py-8 relative flex flex-col gap-8"
     :style="{ backgroundImage: `url(${PopupBackgroundImage})` }"
@@ -105,12 +143,12 @@ onMounted(async () => {
       </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-2 gap-4" v-if="!canPlay">
       <button type="button">
         <img :src="BoxCoinButtonImage" alt="buy-with-coins" />
       </button>
 
-      <button type="button">
+      <button type="button" @click="openInvoice">
         <img :src="BoxStarButtonImage" alt="buy-with-coins" />
       </button>
     </div>
