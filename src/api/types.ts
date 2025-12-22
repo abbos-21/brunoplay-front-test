@@ -231,6 +231,15 @@ export interface BoxResponse {
   user: User
 }
 
+export interface BoxReward {
+  id: number
+  name: string
+}
+
+export interface BoxRewardResponse {
+  rewardList: BoxReward[]
+}
+
 export interface ApiError {
   response: {
     data: {

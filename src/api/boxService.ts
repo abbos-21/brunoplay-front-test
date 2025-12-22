@@ -1,5 +1,5 @@
 import apiClient from './axios'
-import type { ApiResponse, BoxResponse } from './types'
+import type { ApiResponse, BoxResponse, BoxRewardResponse } from './types'
 
 export const boxService = {
   getStatus: async (): Promise<ApiResponse<BoxResponse>> => {
@@ -9,6 +9,11 @@ export const boxService = {
 
   payWithCoins: async (): Promise<ApiResponse<null>> => {
     const response = await apiClient.post<ApiResponse<null>>('/box/pay-with-coins')
+    return response.data
+  },
+
+  getRewards: async (): Promise<ApiResponse<BoxRewardResponse>> => {
+    const response = await apiClient.post<ApiResponse<BoxRewardResponse>>('/box/get-rewards')
     return response.data
   },
 }

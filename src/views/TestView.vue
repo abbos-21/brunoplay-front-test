@@ -5,11 +5,13 @@ import { PopupBackgroundImage } from '@/assets/backgrounds/winter'
 import { BoxCoinButtonImage, BoxStarButtonImage, MenuItemBackground } from '@/assets/images/winter'
 import WebApp from '@twa-dev/sdk'
 import { boxService } from '@/api/boxService'
-import { toast } from 'vue3-toastify'
+
 import LoaderComponent from '@/components/LoaderComponent.vue'
+import type { BoxReward } from '@/api/types'
 
 const loading = ref<boolean>(false)
 const canPlay = ref<boolean>(false)
+const rewardList = ref<BoxReward[] | null>(null)
 
 const invoiceLink = ref<string | null>(null)
 
@@ -32,46 +34,46 @@ function openInvoice() {
   })
 }
 
-const rewards = [
-  { id: 1, name: 'Energy Refill', chance: 26.6 },
-  { id: 2, name: 'Health Refill', chance: 26.0 },
-  { id: 3, name: '3000 Coins', chance: 26.0 },
-  { id: 4, name: '5000 Coins', chance: 10.0 },
-  { id: 5, name: '7000 Coins', chance: 5.0 },
-  { id: 6, name: '10000 Coins', chance: 3.0 },
-  { id: 7, name: '20000 Coins', chance: 2.0 },
-  { id: 8, name: '50000 Coins', chance: 0.6 },
-  { id: 9, name: '75000 Coins', chance: 0.5 },
-  { id: 10, name: '100000 Coins', chance: 0.1 },
-  { id: 11, name: '100 Stars', chance: 0.1 },
-  { id: 12, name: 'Gift', chance: 0.1 },
-]
+// const rewards = [
+//   { id: 1, name: 'Energy Refill', chance: 26.6 },
+//   { id: 2, name: 'Health Refill', chance: 26.0 },
+//   { id: 3, name: '3000 Coins', chance: 26.0 },
+//   { id: 4, name: '5000 Coins', chance: 10.0 },
+//   { id: 5, name: '7000 Coins', chance: 5.0 },
+//   { id: 6, name: '10000 Coins', chance: 3.0 },
+//   { id: 7, name: '20000 Coins', chance: 2.0 },
+//   { id: 8, name: '50000 Coins', chance: 0.6 },
+//   { id: 9, name: '75000 Coins', chance: 0.5 },
+//   { id: 10, name: '100000 Coins', chance: 0.1 },
+//   { id: 11, name: '100 Stars', chance: 0.1 },
+//   { id: 12, name: 'Gift', chance: 0.1 },
+// ]
 
-function weightedRoll(items: typeof rewards) {
-  const total = items.reduce((sum, i) => sum + i.chance, 0)
-  let roll = Math.random() * total
+// function weightedRoll(items: typeof rewards) {
+//   const total = items.reduce((sum, i) => sum + i.chance, 0)
+//   let roll = Math.random() * total
 
-  for (const item of items) {
-    roll -= item.chance
-    if (roll <= 0) return item
-  }
+//   for (const item of items) {
+//     roll -= item.chance
+//     if (roll <= 0) return item
+//   }
 
-  return items[items.length - 1]
-}
+//   return items[items.length - 1]
+// }
 
-function generateRewards(items: typeof rewards, count: number) {
-  const result = []
-  for (let i = 0; i < count; i++) {
-    result.push(weightedRoll(items))
-  }
-  return result
-}
+// function generateRewards(items: typeof rewards, count: number) {
+//   const result = []
+//   for (let i = 0; i < count; i++) {
+//     result.push(weightedRoll(items))
+//   }
+//   return result
+// }
 
 // Reactive array of cards with reward info
 const cards = ref<
   Array<{
     id: number
-    reward: { id: number; name: string }
+    reward: BoxReward
     flipped: boolean
   }>
 >([])
@@ -91,6 +93,31 @@ async function payWithCoins() {
     canPlay.value = response.data.user.canPlayBox
     loading.value = false
   }
+
+  if (!canPlay.value) return
+
+  try {
+    loading.value = true
+    const response = await boxService.getRewards()
+    rewardList.value = response.data.rewardList
+  } catch (error) {
+    console.log(error)
+  } finally {
+    loading.value = false
+  }
+
+  if (rewardList.value) {
+    cards.value = rewardList.value.map((reward, index) => ({
+      id: index + 1,
+      reward,
+      flipped: false,
+    }))
+
+    console.log(
+      'Generated rewards:',
+      rewardList.value.map((r) => r.name),
+    )
+  }
 }
 
 onMounted(async () => {
@@ -105,19 +132,30 @@ onMounted(async () => {
     loading.value = false
   }
 
-  const N = 12
-  const rewardList = generateRewards(rewards, N)
+  if (!canPlay.value) return
 
-  cards.value = rewardList.map((reward, index) => ({
-    id: index + 1,
-    reward,
-    flipped: false,
-  }))
+  try {
+    loading.value = true
+    const response = await boxService.getRewards()
+    rewardList.value = response.data.rewardList
+  } catch (error) {
+    console.log(error)
+  } finally {
+    loading.value = false
+  }
 
-  console.log(
-    'Generated rewards:',
-    rewardList.map((r) => r.name),
-  )
+  if (rewardList.value) {
+    cards.value = rewardList.value.map((reward, index) => ({
+      id: index + 1,
+      reward,
+      flipped: false,
+    }))
+
+    console.log(
+      'Generated rewards:',
+      rewardList.value.map((r) => r.name),
+    )
+  }
 })
 </script>
 
