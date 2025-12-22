@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { starsService } from '@/api/starsService'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { PopupBackgroundImage } from '@/assets/backgrounds/winter'
 import { BoxCoinButtonImage, BoxStarButtonImage, MenuItemBackground } from '@/assets/images/winter'
 import WebApp from '@twa-dev/sdk'
@@ -8,6 +8,8 @@ import { boxService } from '@/api/boxService'
 
 import LoaderComponent from '@/components/LoaderComponent.vue'
 import type { BoxReward } from '@/api/types'
+
+/* -------------------- State -------------------- */
 
 const loading = ref(false)
 const canPlay = ref(false)
@@ -28,6 +30,9 @@ const cards = ref<
     flipped: boolean
   }>
 >([])
+
+/* Cards should be clickable only if user can play and game not finished */
+const cardsDisabled = computed(() => !canPlay.value || gameFinished.value)
 
 /* -------------------- Payments -------------------- */
 
@@ -57,10 +62,12 @@ function resetGameState() {
   selectedRewardIds.value = []
   canClaim.value = false
   gameFinished.value = false
+
+  cards.value.forEach((c) => (c.flipped = false))
 }
 
 function openCard(card: { flipped: boolean; reward: BoxReward }) {
-  if (gameFinished.value) return
+  if (cardsDisabled.value) return
   if (card.flipped) return
   if (openedCount.value >= MAX_OPENS) return
 
@@ -74,7 +81,7 @@ function openCard(card: { flipped: boolean; reward: BoxReward }) {
 }
 
 async function claimRewards() {
-  if (!canClaim.value || gameFinished.value) return
+  if (!canClaim.value) return
 
   try {
     loading.value = true
@@ -82,9 +89,10 @@ async function claimRewards() {
       rewardIds: selectedRewardIds.value,
     })
 
+    // Game finished → disable cards & show buy buttons
     gameFinished.value = true
     canClaim.value = false
-    cards.value = [] // hide cards after claim
+    canPlay.value = false
   } catch (error) {
     console.error('Failed to claim rewards:', error)
   } finally {
@@ -93,23 +101,6 @@ async function claimRewards() {
 }
 
 /* -------------------- Box API -------------------- */
-
-async function payWithCoins() {
-  try {
-    loading.value = true
-    await boxService.payWithCoins()
-  } catch (error) {
-    console.log(error)
-  } finally {
-    const response = await boxService.getStatus()
-    canPlay.value = response.data.user.canPlayBox
-    loading.value = false
-  }
-
-  if (!canPlay.value) return
-
-  await loadRewards()
-}
 
 async function loadRewards() {
   try {
@@ -124,12 +115,28 @@ async function loadRewards() {
 
   if (rewardList.value) {
     resetGameState()
-
     cards.value = rewardList.value.map((reward, index) => ({
       id: index + 1,
       reward,
       flipped: false,
     }))
+  }
+}
+
+async function payWithCoins() {
+  try {
+    loading.value = true
+    await boxService.payWithCoins()
+  } catch (error) {
+    console.log(error)
+  } finally {
+    const response = await boxService.getStatus()
+    canPlay.value = response.data.user.canPlayBox
+    loading.value = false
+  }
+
+  if (canPlay.value) {
+    await loadRewards()
   }
 }
 
@@ -147,9 +154,8 @@ onMounted(async () => {
     loading.value = false
   }
 
-  if (canPlay.value) {
-    await loadRewards()
-  }
+  // Always load cards (even disabled)
+  await loadRewards()
 })
 </script>
 
@@ -157,31 +163,42 @@ onMounted(async () => {
   <LoaderComponent v-if="loading" />
 
   <div
-    class="w-full h-full bg-cover bg-center bg-no-repeat p-2 py-8 relative flex flex-col gap-8"
+    class="w-full h-full bg-cover bg-center bg-no-repeat p-2 py-8 relative flex flex-col gap-6"
     :style="{ backgroundImage: `url(${PopupBackgroundImage})` }"
   >
     <h1 class="text-center text-white font-bold text-xl">Choose and get your reward</h1>
 
-    <!-- Cards -->
-    <div v-if="cards.length > 0" class="grid grid-cols-3 gap-x-4 gap-y-6 px-4">
+    <!-- Buy buttons (top, after claim or when cannot play) -->
+    <div class="grid grid-cols-2 gap-4 px-4" v-if="!canPlay">
+      <button type="button" @click="payWithCoins">
+        <img :src="BoxCoinButtonImage" />
+      </button>
+
+      <button type="button" @click="openInvoice">
+        <img :src="BoxStarButtonImage" />
+      </button>
+    </div>
+
+    <!-- Cards (always visible) -->
+    <div class="grid grid-cols-3 gap-x-4 gap-y-6 px-4">
       <div
         v-for="card in cards"
         :key="card.id"
         class="flip-card"
-        :class="{ 'pointer-events-none': openedCount >= MAX_OPENS && !card.flipped }"
+        :class="{
+          'pointer-events-none opacity-60': cardsDisabled,
+        }"
         @click="openCard(card)"
       >
         <div class="flip-card-inner" :class="{ flipped: card.flipped }">
           <div class="flip-card-front">
-            <img :src="MenuItemBackground" alt="Gift box" class="w-full h-full object-cover" />
+            <img :src="MenuItemBackground" class="w-full h-full object-cover" />
           </div>
 
           <div class="flip-card-back">
-            <div class="h-full text-center flex flex-col">
-              <h2 class="text-white font-bold my-auto">
-                {{ card.reward.name }}
-              </h2>
-            </div>
+            <h2 class="text-white font-bold">
+              {{ card.reward.name }}
+            </h2>
           </div>
         </div>
       </div>
@@ -189,23 +206,8 @@ onMounted(async () => {
 
     <!-- Claim button -->
     <div v-if="canClaim" class="flex justify-center">
-      <button
-        type="button"
-        class="px-8 py-3 rounded-xl bg-yellow-400 text-black font-bold"
-        @click="claimRewards"
-      >
+      <button class="px-8 py-3 rounded-xl bg-yellow-400 text-black font-bold" @click="claimRewards">
         Claim
-      </button>
-    </div>
-
-    <!-- Buy buttons -->
-    <div class="grid grid-cols-2 gap-4" v-if="!canPlay">
-      <button type="button" @click="payWithCoins">
-        <img :src="BoxCoinButtonImage" alt="buy-with-coins" />
-      </button>
-
-      <button type="button" @click="openInvoice">
-        <img :src="BoxStarButtonImage" alt="buy-with-stars" />
       </button>
     </div>
   </div>
@@ -213,21 +215,18 @@ onMounted(async () => {
 
 <style scoped>
 .flip-card {
-  background-color: transparent;
   perspective: 1000px;
-  cursor: pointer;
   width: 100%;
   aspect-ratio: 4 / 3;
+  cursor: pointer;
 }
 
 .flip-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  text-align: center;
-  transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: transform 0.8s;
   transform-style: preserve-3d;
-  border-radius: 12px;
 }
 
 .flip-card-inner.flipped {
@@ -241,14 +240,11 @@ onMounted(async () => {
   height: 100%;
   backface-visibility: hidden;
   border-radius: 12px;
-  overflow: hidden;
 }
 
 .flip-card-back {
-  background-color: rgba(0, 146, 184, 0.5);
-  color: white;
-  border: 1px solid white;
   transform: rotateY(180deg);
+  background: rgba(0, 146, 184, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
