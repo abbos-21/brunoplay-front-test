@@ -149,7 +149,8 @@ watch(
     navIsVisible.value = !(
       name === 'leaderboard' ||
       name === 'withdraw' ||
-      name === 'withdraw-history'
+      name === 'withdraw-history' ||
+      name === 'test'
     )
   },
   { immediate: true },
