@@ -136,16 +136,18 @@ export function useBoxGame() {
     try {
       loading.value = true
       await getInvoiceLink()
+
       const response = await boxService.getStatus()
       canPlay.value = response.data.user.canPlayBox
+
+      if (canPlay.value) {
+        cards.value = [] // ← Force clear old cards
+        await loadRewards() // ← Always reload fresh
+      }
     } catch (error) {
       console.log(error)
     } finally {
       loading.value = false
-    }
-
-    if (canPlay.value) {
-      await loadRewards()
     }
   })
 
