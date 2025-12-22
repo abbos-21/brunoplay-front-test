@@ -101,6 +101,8 @@ onMounted(async () => {
     canPlay.value = response.data.user.canPlayBox
   } catch (error) {
     console.log(error)
+  } finally {
+    loading.value = false
   }
 
   const N = 12
