@@ -10,6 +10,10 @@ button {
   cursor: pointer;
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 .task {
   --adsgram-task-font-size: 16px;
   --adsgram-task-icon-size: 48px;

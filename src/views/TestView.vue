@@ -21,7 +21,7 @@ const {
   <LoaderComponent v-if="loading" />
 
   <div
-    class="w-full h-full bg-cover bg-center bg-no-repeat p-2 py-8 relative flex flex-col gap-8"
+    class="w-full h-full bg-cover bg-center bg-no-repeat p-2 py-8 relative flex flex-col gap-8 overflow-y-scroll scrollbar-hide"
     :style="{ backgroundImage: `url(${PopupBackgroundImage})` }"
   >
     <h1 class="text-center text-white font-bold text-xl">Choose and get your reward</h1>
@@ -49,6 +49,10 @@ const {
           </div>
         </div>
       </div>
+    </div>
+
+    <div v-else class="grid grid-cols-3 gap-x-4 gap-y-6 px-4 opacity-70">
+      <img v-for="n in 12" :key="n" :src="MenuItemBackground" alt="Gift box" />
     </div>
 
     <!-- Claim button -->
