@@ -16,4 +16,9 @@ export const boxService = {
     const response = await apiClient.post<ApiResponse<BoxRewardResponse>>('/box/get-rewards')
     return response.data
   },
+
+  rewardUser: async (payload: { rewardIds: number[] }): Promise<ApiResponse<null>> => {
+    const response = await apiClient.post<ApiResponse<null>>('/box/reward-user', payload)
+    return response.data
+  },
 }
