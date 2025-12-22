@@ -52,7 +52,9 @@ const {
     </div>
 
     <div v-else class="grid grid-cols-3 gap-x-4 gap-y-6 px-4 opacity-70">
-      <img v-for="n in 12" :key="n" :src="MenuItemBackground" alt="Gift box" />
+      <div v-for="n in 12" :key="n">
+        <img :src="MenuItemBackground" alt="Gift box" class="w-full h-full object-cover" />
+      </div>
     </div>
 
     <!-- Claim button -->
