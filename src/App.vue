@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch, computed, provide } from 'vue'
-import { RouterView, RouterLink, useRoute } from 'vue-router'
+import { RouterView, RouterLink, useRoute, useRouter } from 'vue-router'
 import WebApp from '@twa-dev/sdk'
 import { toast } from 'vue3-toastify'
 
@@ -25,6 +25,7 @@ import { withdrawService } from './api/withdrawService'
 import { blockListService } from './api/blockListService'
 
 const route = useRoute()
+const router = useRouter()
 
 /* -------------------- STATE -------------------- */
 const loading = ref(true)
@@ -133,9 +134,16 @@ const isTelegramMobile = (): boolean => {
 const withdrawRate = ref<number | null>(null)
 provide('withdrawRate', withdrawRate)
 
+const backButtonHandler = () => {
+  router.back()
+}
+
+WebApp.BackButton.onClick(backButtonHandler)
+
 onMounted(() => {
   WebApp.ready()
   WebApp.expand()
+  WebApp.BackButton.show()
   bootstrapApp()
 })
 
