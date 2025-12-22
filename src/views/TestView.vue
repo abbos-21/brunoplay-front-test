@@ -146,7 +146,7 @@ onMounted(async () => {
     </div>
 
     <div class="grid grid-cols-2 gap-4" v-if="!canPlay">
-      <button type="button">
+      <button type="button" @click="payWithCoins">
         <img :src="BoxCoinButtonImage" alt="buy-with-coins" />
       </button>
 
