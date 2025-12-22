@@ -52,7 +52,7 @@ const {
     </div>
 
     <div v-else class="grid grid-cols-3 gap-x-4 gap-y-6 px-4 opacity-70">
-      <div v-for="n in 12" :key="n">
+      <div v-for="n in 12" :key="n" style="aspect-ratio: 4 / 3">
         <img :src="MenuItemBackground" alt="Gift box" class="w-full h-full object-cover" />
       </div>
     </div>
@@ -87,7 +87,6 @@ const {
   perspective: 1000px;
   cursor: pointer;
   width: 100%;
-  aspect-ratio: 4 / 3;
 }
 
 .flip-card-inner {
