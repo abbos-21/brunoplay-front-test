@@ -4,7 +4,7 @@ import { boxService } from '@/api/boxService'
 import { onMounted, ref } from 'vue'
 import WebApp from '@twa-dev/sdk'
 import type { BoxReward } from '@/api/types'
-import { toast } from 'vue3-toastify'
+// import { toast } from 'vue3-toastify'
 
 export function useBoxGame() {
   const loading = ref(false)
@@ -78,7 +78,8 @@ export function useBoxGame() {
       })
 
       if (claimResponse.success) {
-        toast.success('Successfully claimed all the rewards')
+        WebApp.HapticFeedback.notificationOccurred('success')
+        // toast.success('Successfully claimed all the rewards')
       }
 
       gameFinished.value = true
