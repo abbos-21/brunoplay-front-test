@@ -21,47 +21,32 @@ const {
   <LoaderComponent v-if="loading" />
 
   <div
-    class="w-full h-full bg-cover bg-center bg-no-repeat p-2 py-8 relative flex flex-col gap-8 overflow-y-scroll scrollbar-hide"
+    class="w-full h-full bg-cover bg-center bg-no-repeat p-2 py-8 relative flex flex-col gap-8"
     :style="{ backgroundImage: `url(${PopupBackgroundImage})` }"
   >
     <h1 class="text-center text-white font-bold text-xl">Choose and get your reward</h1>
 
     <!-- Cards -->
-    <div class="px-4">
-      <div v-if="cards.length > 0" class="grid grid-cols-3 gap-x-4 gap-y-6">
-        <div
-          v-for="card in cards"
-          :key="card.id"
-          class="flip-card"
-          :class="{ 'pointer-events-none': openedCount >= 3 && !card.flipped }"
-          @click="openCard(card)"
-        >
-          <div class="flip-card-inner" :class="{ flipped: card.flipped }">
-            <div class="flip-card-front">
-              <img :src="MenuItemBackground" alt="Gift box" class="w-full h-full object-cover" />
-            </div>
+    <div v-if="cards.length > 0" class="grid grid-cols-3 gap-x-4 gap-y-6 px-4">
+      <div
+        v-for="card in cards"
+        :key="card.id"
+        class="flip-card"
+        :class="{ 'pointer-events-none': openedCount >= 3 && !card.flipped }"
+        @click="openCard(card)"
+      >
+        <div class="flip-card-inner" :class="{ flipped: card.flipped }">
+          <div class="flip-card-front">
+            <img :src="MenuItemBackground" alt="Gift box" class="w-full h-full object-cover" />
+          </div>
 
-            <div class="flip-card-back">
-              <div class="h-full text-center flex flex-col">
-                <h2 class="text-white font-bold my-auto">
-                  {{ card.reward.name }}
-                </h2>
-              </div>
+          <div class="flip-card-back">
+            <div class="h-full text-center flex flex-col">
+              <h2 class="text-white font-bold my-auto">
+                {{ card.reward.name }}
+              </h2>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div
-        v-else-if="canPlay && cards.length === 0 && !loading"
-        class="grid grid-cols-3 gap-x-4 gap-y-6 opacity-70"
-      >
-        <div v-for="n in 12" :key="n" style="aspect-ratio: 4 / 3">
-          <img
-            :src="MenuItemBackground"
-            alt="Gift box"
-            class="w-full h-full object-cover rounded-xl"
-          />
         </div>
       </div>
     </div>
@@ -96,6 +81,7 @@ const {
   perspective: 1000px;
   cursor: pointer;
   width: 100%;
+  aspect-ratio: 4 / 3;
 }
 
 .flip-card-inner {

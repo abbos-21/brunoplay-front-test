@@ -78,10 +78,7 @@ export function useBoxGame() {
 
       gameFinished.value = true
       canClaim.value = false
-      cards.value = []
-
-      const response = await boxService.getStatus()
-      canPlay.value = response.data.user.canPlayBox
+      cards.value = [] // hide cards after claim
     } catch (error) {
       console.error('Failed to claim rewards:', error)
     } finally {
