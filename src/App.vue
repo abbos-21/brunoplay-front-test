@@ -135,7 +135,7 @@ const withdrawRate = ref<number | null>(null)
 provide('withdrawRate', withdrawRate)
 
 const backButtonHandler = () => {
-  router.back()
+  router.push('/')
 }
 
 watch(
