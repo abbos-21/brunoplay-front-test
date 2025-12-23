@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { PopupBackgroundImage } from '@/assets/backgrounds/winter'
-import { BoxCoinButtonImage, BoxStarButtonImage, MenuItemBackground } from '@/assets/images/winter'
+import {
+  BoxClaimButtonImage,
+  BoxCoinButtonImage,
+  BoxStarButtonImage,
+  MenuItemBackground,
+} from '@/assets/images/winter'
 import LoaderComponent from '@/components/LoaderComponent.vue'
 import { useBoxGame } from '@/composables/useBoxGame'
 
@@ -21,7 +26,7 @@ const {
   <LoaderComponent v-if="loading" />
 
   <div
-    class="w-full h-full bg-cover bg-center bg-no-repeat p-2 py-8 relative flex flex-col gap-8"
+    class="w-full h-full bg-cover bg-center bg-no-repeat p-2 py-8 relative flex flex-col gap-8 overflow-y-scroll scrollbar-hide"
     :style="{ backgroundImage: `url(${PopupBackgroundImage})` }"
   >
     <h1 class="text-center text-white font-bold text-xl">Choose and get your reward</h1>
@@ -51,20 +56,16 @@ const {
       </div>
     </div>
 
-    <div v-if="!canPlay" class="grid grid-cols-3 gap-x-4 gap-y-6 px-4 opaacity-50">
+    <div v-if="!canPlay" class="grid grid-cols-3 gap-x-4 gap-y-6 px-4 opacity-50">
       <div v-for="n in 12" :key="n" class="pointer-events-none aspect-4/3">
-        <img :src="MenuItemBackground" alt="Gift box" />
+        <img :src="MenuItemBackground" alt="Gift box" class="w-full h-full object-cover" />
       </div>
     </div>
 
     <!-- Claim button -->
-    <div v-if="canClaim" class="flex justify-center">
-      <button
-        type="button"
-        class="px-8 py-3 rounded-xl bg-yellow-400 text-black font-bold"
-        @click="claimRewards"
-      >
-        Claim
+    <div v-if="canClaim" class="flex justify-center w-full">
+      <button type="button" @click="claimRewards" style="width: calc(50% - 8px)">
+        <img :src="BoxClaimButtonImage" alt="claim-rewards" class="w-full" />
       </button>
     </div>
 

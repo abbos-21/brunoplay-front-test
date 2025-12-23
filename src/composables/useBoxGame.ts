@@ -4,6 +4,7 @@ import { boxService } from '@/api/boxService'
 import { onMounted, ref } from 'vue'
 import WebApp from '@twa-dev/sdk'
 import type { BoxReward } from '@/api/types'
+import { toast } from 'vue3-toastify'
 
 export function useBoxGame() {
   const loading = ref(false)
@@ -72,9 +73,13 @@ export function useBoxGame() {
 
     try {
       loading.value = true
-      await boxService.rewardUser({
+      const claimResponse = await boxService.rewardUser({
         rewardIds: selectedRewardIds.value,
       })
+
+      if (claimResponse.success) {
+        toast.success('Successfully claimed all the rewards')
+      }
 
       gameFinished.value = true
       canClaim.value = false
