@@ -14,6 +14,7 @@ const {
   claimRewards,
   payWithCoins,
   openInvoice,
+  gameFinished,
 } = useBoxGame()
 </script>
 
@@ -27,13 +28,18 @@ const {
     <h1 class="text-center text-white font-bold text-xl">Choose and get your reward</h1>
 
     <!-- Cards -->
-    <div v-if="cards.length > 0" class="grid grid-cols-3 gap-x-4 gap-y-6 px-4">
+    <!-- Cards Grid - Always show cards if they exist -->
+    <div v-if="cards.length > 0" class="relative grid grid-cols-3 gap-x-4 gap-y-6 px-4">
+      <!-- Actual cards (interactive only when playing) -->
       <div
         v-for="card in cards"
         :key="card.id"
         class="flip-card"
-        :class="{ 'pointer-events-none': openedCount >= 3 && !card.flipped }"
-        @click="openCard(card)"
+        :class="{
+          'pointer-events-none opacity-50':
+            !canPlay || gameFinished || (openedCount >= 3 && !card.flipped),
+        }"
+        @click="canPlay && !gameFinished && openedCount < 3 && !card.flipped && openCard(card)"
       >
         <div class="flip-card-inner" :class="{ flipped: card.flipped }">
           <div class="flip-card-front">
@@ -41,12 +47,25 @@ const {
           </div>
 
           <div class="flip-card-back">
-            <div class="h-full text-center flex flex-col">
-              <h2 class="text-white font-bold my-auto">
+            <div class="h-full text-center flex flex-col justify-center">
+              <h2 class="text-white font-bold text-lg">
                 {{ card.reward.name }}
               </h2>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Overlay message when locked (not playable or game finished) -->
+      <div
+        v-if="!canPlay || gameFinished"
+        class="absolute inset-0 flex items-center justify-center pointer-events-none"
+      >
+        <div class="bg-black bg-opacity-70 px-8 py-6 rounded-3xl text-center">
+          <p class="text-white text-xl font-bold">
+            {{ gameFinished ? 'Rewards claimed!' : 'Pay to unlock the boxes' }}
+          </p>
+          <p v-if="gameFinished" class="text-yellow-300 text-sm mt-2">Buy again to play!</p>
         </div>
       </div>
     </div>

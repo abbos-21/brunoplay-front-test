@@ -78,7 +78,18 @@ export function useBoxGame() {
 
       gameFinished.value = true
       canClaim.value = false
-      cards.value = [] // hide cards after claim
+
+      // DO NOT clear cards.value anymore
+      // cards.value = []
+
+      // Reset flip states so cards appear closed again
+      cards.value.forEach((card) => {
+        card.flipped = false
+      })
+
+      // Refresh status – this should set canPlay = false until next payment
+      const response = await boxService.getStatus()
+      canPlay.value = response.data.user.canPlayBox
     } catch (error) {
       console.error('Failed to claim rewards:', error)
     } finally {
@@ -156,5 +167,6 @@ export function useBoxGame() {
     claimRewards,
     payWithCoins,
     openInvoice,
+    gameFinished,
   }
 }
