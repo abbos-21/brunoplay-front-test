@@ -42,7 +42,8 @@ export function useBoxGame() {
 
     WebApp.openInvoice(invoiceLink.value, (status) => {
       if (status === 'cancelled') {
-        router.go(0)
+        loading.value = true
+        window.location.reload()
       }
     })
   }
