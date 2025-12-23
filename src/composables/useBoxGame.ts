@@ -39,8 +39,8 @@ export function useBoxGame() {
     if (!invoiceLink.value) return
 
     WebApp.openInvoice(invoiceLink.value, (status) => {
-      if (status === 'paid') {
-        alert('You paid!')
+      if (status === 'cancelled') {
+        window.location.reload()
       }
     })
   }
