@@ -138,12 +138,22 @@ const backButtonHandler = () => {
   router.back()
 }
 
-WebApp.BackButton.onClick(backButtonHandler)
+watch(
+  () => route.path,
+  (newPath) => {
+    if (newPath === '/test') {
+      WebApp.BackButton.show()
+    } else {
+      WebApp.BackButton.hide()
+    }
+  },
+  { immediate: true }, // Run immediately on mount to set initial state
+)
 
 onMounted(() => {
   WebApp.ready()
   WebApp.expand()
-  WebApp.BackButton.show()
+  WebApp.BackButton.onClick(backButtonHandler)
   bootstrapApp()
 })
 
@@ -231,6 +241,7 @@ const bootstrapApp = async () => {
 }
 
 onBeforeUnmount(() => {
+  WebApp.BackButton.offClick(backButtonHandler)
   observer?.disconnect()
 })
 </script>
