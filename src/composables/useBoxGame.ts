@@ -4,6 +4,8 @@ import { boxService } from '@/api/boxService'
 import { onMounted, ref } from 'vue'
 import WebApp from '@twa-dev/sdk'
 import type { BoxReward } from '@/api/types'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 // import { toast } from 'vue3-toastify'
 
 export function useBoxGame() {
@@ -40,7 +42,7 @@ export function useBoxGame() {
 
     WebApp.openInvoice(invoiceLink.value, (status) => {
       if (status === 'cancelled') {
-        window.location.reload()
+        router.go(0)
       }
     })
   }
