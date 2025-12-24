@@ -4,9 +4,7 @@ import { boxService } from '@/api/boxService'
 import { onMounted, ref } from 'vue'
 import WebApp from '@twa-dev/sdk'
 import type { BoxReward } from '@/api/types'
-import { useRouter } from 'vue-router'
-const router = useRouter()
-// import { toast } from 'vue3-toastify'
+import { toast } from 'vue3-toastify'
 
 export function useBoxGame() {
   const loading = ref(false)
@@ -41,7 +39,11 @@ export function useBoxGame() {
     if (!invoiceLink.value) return
 
     WebApp.openInvoice(invoiceLink.value, (status) => {
-      if (status === 'cancelled') {
+      if (status === 'paid') {
+        loading.value = true
+        window.location.reload()
+      } else if (status === 'failed') {
+        toast.error('Payment failed, please try again later')
         loading.value = true
         window.location.reload()
       }
@@ -81,8 +83,8 @@ export function useBoxGame() {
       })
 
       if (claimResponse.success) {
-        WebApp.HapticFeedback.notificationOccurred('success')
-        // toast.success('Successfully claimed all the rewards')
+        // WebApp.HapticFeedback.notificationOccurred('success')
+        toast.success('Successfully claimed all the rewards')
       }
 
       gameFinished.value = true

@@ -45,7 +45,9 @@ const isUserBiggie = computed(
 
 /* -------------------- AUDIO -------------------- */
 watch(audioRef, (el) => {
-  if (el) setAudioElement(el)
+  if (!el) return
+  setAudioElement(el)
+  el.volume = 0.3
 })
 
 const resumeOnInteraction = () => {
