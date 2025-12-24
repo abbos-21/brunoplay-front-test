@@ -1,7 +1,7 @@
 // src/composables/useBoxGame.ts
 import { starsService } from '@/api/starsService'
 import { boxService } from '@/api/boxService'
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import WebApp from '@twa-dev/sdk'
 import type { BoxReward } from '@/api/types'
 import { toast } from 'vue3-toastify'
@@ -161,6 +161,10 @@ export function useBoxGame() {
     if (canPlay.value) {
       await loadRewards()
     }
+  })
+
+  onBeforeUnmount(() => {
+    claimRewards()
   })
 
   return {
