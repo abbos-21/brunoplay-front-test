@@ -133,8 +133,11 @@ export function useBoxGame() {
     if (rewardList.value) {
       resetGameState()
 
-      cards.value = rewardList.value.map((reward, index) => ({
-        id: index + 1,
+      // Create a shuffled copy of the rewards
+      const shuffledRewards = [...rewardList.value].sort(() => Math.random() - 0.5)
+
+      cards.value = shuffledRewards.map((reward, index) => ({
+        id: index + 1, // still sequential IDs for v-for keys (safe and stable)
         reward,
         flipped: false,
       }))
