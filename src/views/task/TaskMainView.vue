@@ -80,8 +80,6 @@ const checkSubscription = async (channel: string) => {
 
 // TASK AD
 
-const blockId = import.meta.env.VITE_TASK_BLOCK_ID
-
 const handleReward = () => {
   toast.success('20 coins have been successfully added to your balance!')
 }
@@ -101,7 +99,7 @@ const rawHtml = ref<string>(
   <div class="my-4 flex flex-col gap-4 overflow-y-scroll scrollbar-hide">
     <!-- eslint-disable -->
     <AdsgramTask
-      :blockId="blockId"
+      blockId="task-19603"
       :debug="false"
       class="task"
       :onReward="handleReward"
