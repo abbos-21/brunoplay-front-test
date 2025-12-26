@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
 import WebApp from '@twa-dev/sdk'
 import { toast } from 'vue3-toastify'
 
@@ -80,6 +80,8 @@ const checkSubscription = async (channel: string) => {
 
 // TASK AD
 
+const blockId = import.meta.env.VITE_TASK_BLOCK_ID
+
 const handleReward = () => {
   toast.success('20 coins have been successfully added to your balance!')
 }
@@ -91,25 +93,6 @@ const handleError = (event: CustomEvent<string>) => {
 const rawHtml = ref<string>(
   "<span slot='reward' style='font-size: 14px; display: flex; align-items: center; gap: 4px;'><img src='/coin.png' style='width: 16px; height: 16px;' alt='coin-image' /> 100</span><div slot='button' style='background-color: #00bc7d; color: white; border-radius: 6px; padding: 4px 0; font-weight: bold;'>Go</div><div slot='claim' style='background-color: #ffac33; color: white; border-radius: 6px; padding: 4px 0; font-weight: bold;'>Claim</div><div slot='done' style='background-color: #00b8db; color: white; border-radius: 6px; padding: 4px 0; font-weight: bold;'>Done</div>",
 )
-
-const result = ref()
-
-function pickWithProbability(a: string, b: string) {
-  return Math.random() < 0.25 ? a : b
-}
-
-onMounted(async () => {
-  result.value = pickWithProbability(
-    import.meta.env.VITE_TASK_BLOCK_ID,
-    import.meta.env.VITE_TASK_BLOCK_ID_2,
-  )
-
-  await mountFetch()
-})
-
-onUnmounted(() => {
-  result.value = null
-})
 </script>
 
 <template>
@@ -118,7 +101,7 @@ onUnmounted(() => {
   <div class="my-4 flex flex-col gap-4 overflow-y-scroll scrollbar-hide">
     <!-- eslint-disable -->
     <AdsgramTask
-      :blockId="result"
+      :blockId="blockId"
       :debug="false"
       class="task"
       :onReward="handleReward"
