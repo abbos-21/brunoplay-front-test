@@ -242,7 +242,7 @@ const withdrawRate: number | undefined = inject('withdrawRate')
           </div>
 
           <!-- GIFT INFO -->
-          <div v-if="getGiftForRank(index)" class="flex items-center gap-1 text-xs">
+          <div v-if="getGiftForRank(index)" class="flex flex-col items-center gap-1 text-xs">
             <span>{{ getGiftForRank(index)!.name }}</span>
             <span class="text-[10px] opacity-60"> = {{ getGiftForRank(index)!.price }} TON </span>
           </div>
