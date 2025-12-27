@@ -7,8 +7,9 @@ import type { Season, LeaderboardResponse } from '@/api/types'
 
 import { LeaderboardBackgroundImage } from '@/assets/backgrounds/winter'
 import { ArrowBackIcon, CupIcon, InfoIcon, SwitchIcon } from '@/assets/icons/winter'
-import { CoinImage, UserImage } from '@/assets/images/winter'
+import { CoinImage, IceCreamImage, UserImage } from '@/assets/images/winter'
 import LoaderComponent from '@/components/LoaderComponent.vue'
+import TelegramStarIcon from '@/assets/icons/winter/star.svg?url'
 
 /* -------------------- state -------------------- */
 const season = ref<Season | null>(null)
@@ -95,14 +96,28 @@ onBeforeUnmount(() => {
   if (timerInterval) clearInterval(timerInterval)
 })
 
-const withdrawRate: number | undefined = inject('withdrawRate')
-
-const getRankCoins = (index: number) => {
-  if (index < 10) {
-    return 50000 - index * 1000
-  }
-  return 25000
+type Gift = {
+  name: string
+  price: number
+  img: string
 }
+
+const giftsByLevel: Record<number, Gift[]> = {
+  1: [
+    { name: 'Ice Cream', price: 2, img: IceCreamImage },
+    { name: '50 Stars', price: 0.5, img: TelegramStarIcon },
+  ],
+}
+
+const currentLevelGifts = computed<Gift[]>(() => {
+  return giftsByLevel[currentLevel.value] ?? []
+})
+
+const getGiftForRank = (index: number): Gift | null => {
+  return currentLevelGifts.value[index] ?? null
+}
+
+const withdrawRate: number | undefined = inject('withdrawRate')
 </script>
 
 <template>
@@ -188,7 +203,7 @@ const getRankCoins = (index: number) => {
         </div>
 
         <!-- RANK -->
-        <div class="flex flex-col items-center gap-1 font-bold leading-none">
+        <!-- <div class="flex flex-col items-center gap-1 font-bold leading-none">
           <CupIcon v-if="index === 0" class="w-6 text-orange-400" />
           <CupIcon v-else-if="index === 1" class="w-6 text-slate-400" />
           <CupIcon v-else-if="index === 2" class="w-6 text-[#C67747]" />
@@ -199,6 +214,19 @@ const getRankCoins = (index: number) => {
           <p class="text-[10px] opacity-60">
             = {{ (getRankCoins(index) / (withdrawRate ?? Infinity)).toFixed(2) }} TON
           </p>
+        </div> -->
+
+        <div class="flex flex-col items-center gap-1 font-bold leading-none">
+          <CupIcon v-if="index === 0" class="w-6 text-orange-400" />
+          <CupIcon v-else-if="index === 1" class="w-6 text-slate-400" />
+          <CupIcon v-else-if="index === 2" class="w-6 text-[#C67747]" />
+          <h1 v-else>#{{ index + 1 }}</h1>
+
+          <!-- GIFT -->
+          <div v-if="getGiftForRank(index)" class="flex items-center gap-1 text-xs mt-1 opacity-90">
+            <img :src="getGiftForRank(index)!.img" class="w-4 h-4" />
+            <span>{{ getGiftForRank(index)!.name }}</span>
+          </div>
         </div>
       </div>
     </div>
