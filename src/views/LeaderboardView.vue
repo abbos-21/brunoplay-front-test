@@ -102,10 +102,48 @@ type Gift = {
   img: string
 }
 
+const withdrawRate: number | undefined = inject('withdrawRate')
+
 const giftsByLevel: Record<number, Gift[]> = {
   1: [
-    { name: 'Ice Cream', price: 2, img: IceCreamImage },
     { name: '50 Stars', price: 0.5, img: TelegramStarIcon },
+    { name: '21 Stars', price: 0.21, img: TelegramStarIcon },
+    { name: '13 Stars', price: 0.13, img: TelegramStarIcon },
+    {
+      name: '3000 coins',
+      price: Math.round(3000 / (withdrawRate ?? Infinity)),
+      img: TelegramStarIcon,
+    },
+    {
+      name: '3000 coins',
+      price: Math.round(3000 / (withdrawRate ?? Infinity)),
+      img: TelegramStarIcon,
+    },
+    {
+      name: '3000 coins',
+      price: Math.round(3000 / (withdrawRate ?? Infinity)),
+      img: TelegramStarIcon,
+    },
+    {
+      name: '3000 coins',
+      price: Math.round(3000 / (withdrawRate ?? Infinity)),
+      img: TelegramStarIcon,
+    },
+    {
+      name: '3000 coins',
+      price: Math.round(3000 / (withdrawRate ?? Infinity)),
+      img: TelegramStarIcon,
+    },
+    {
+      name: '3000 coins',
+      price: Math.round(3000 / (withdrawRate ?? Infinity)),
+      img: TelegramStarIcon,
+    },
+    {
+      name: '3000 coins',
+      price: Math.round(3000 / (withdrawRate ?? Infinity)),
+      img: TelegramStarIcon,
+    },
   ],
 }
 
@@ -135,8 +173,6 @@ const getRankVisual = (index: number): RankVisual | null => {
 const getRankLabel = (index: number): string => {
   return `#${index + 1}`
 }
-
-const withdrawRate: number | undefined = inject('withdrawRate')
 </script>
 
 <template>
@@ -233,12 +269,16 @@ const withdrawRate: number | undefined = inject('withdrawRate')
             />
 
             <!-- RANK NUMBER (fallback) -->
-            <span v-else class="text-sm">
+            <span v-else>
               {{ getRankLabel(index) }}
             </span>
 
             <!-- GIFT ICON -->
-            <img v-if="getGiftForRank(index)" :src="getGiftForRank(index)!.img" class="w-6 h-6" />
+            <img
+              v-if="getGiftForRank(index)?.img"
+              :src="getGiftForRank(index)!.img"
+              class="w-6 h-6"
+            />
           </div>
 
           <!-- GIFT INFO -->
