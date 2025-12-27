@@ -223,7 +223,7 @@ const withdrawRate: number | undefined = inject('withdrawRate')
 
         <div class="flex flex-col items-center gap-1 font-bold leading-none">
           <!-- ICON / RANK -->
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1">
             <!-- CUP (if exists) -->
             <component
               v-if="getRankVisual(index)"
@@ -242,7 +242,7 @@ const withdrawRate: number | undefined = inject('withdrawRate')
           </div>
 
           <!-- GIFT INFO -->
-          <div v-if="getGiftForRank(index)" class="flex flex-col items-center gap-1 text-xs">
+          <div v-if="getGiftForRank(index)" class="flex flex-col items-center text-xs">
             <span>{{ getGiftForRank(index)!.name }}</span>
             <span class="text-[10px] opacity-60"> = {{ getGiftForRank(index)!.price }} TON </span>
           </div>
