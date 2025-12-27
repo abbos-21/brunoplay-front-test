@@ -117,6 +117,25 @@ const getGiftForRank = (index: number): Gift | null => {
   return currentLevelGifts.value[index] ?? null
 }
 
+type RankVisual = {
+  icon?: typeof CupIcon
+  color?: string
+}
+
+const rankVisuals: Record<number, RankVisual> = {
+  0: { icon: CupIcon, color: '#FFAC33' }, // gold
+  1: { icon: CupIcon, color: '#ABB0B1' }, // silver
+  2: { icon: CupIcon, color: '#C67747' }, // bronze
+}
+
+const getRankVisual = (index: number): RankVisual | null => {
+  return rankVisuals[index] ?? null
+}
+
+const getRankLabel = (index: number): string => {
+  return `#${index + 1}`
+}
+
 const withdrawRate: number | undefined = inject('withdrawRate')
 </script>
 
@@ -203,35 +222,31 @@ const withdrawRate: number | undefined = inject('withdrawRate')
         </div>
 
         <div class="flex flex-col items-center gap-1 font-bold leading-none">
-          <div v-if="index === 0" class="flex gap-2 items-center">
-            <CupIcon class="w-6 text-[#FFAC33]" />
-            <img :src="getGiftForRank(index)!.img" class="w-6 h-6" />
+          <!-- ICON / RANK -->
+          <div class="flex items-center gap-2">
+            <!-- CUP (if exists) -->
+            <component
+              v-if="getRankVisual(index)"
+              :is="getRankVisual(index)!.icon"
+              class="w-6"
+              :style="{ color: getRankVisual(index)!.color }"
+            />
+
+            <!-- RANK NUMBER (fallback) -->
+            <span v-else class="text-sm">
+              {{ getRankLabel(index) }}
+            </span>
+
+            <!-- GIFT ICON -->
+            <img v-if="getGiftForRank(index)" :src="getGiftForRank(index)!.img" class="w-6 h-6" />
           </div>
 
-          <CupIcon v-else-if="index === 1" class="w-6 text-[#ABB0B1]" />
-          <CupIcon v-else-if="index === 2" class="w-6 text-[#C67747]" />
-          <h1 v-else>#{{ index + 1 }}</h1>
-
-          <!-- GIFT -->
-          <div v-if="getGiftForRank(index)" class="flex items-center text-xs">
+          <!-- GIFT INFO -->
+          <div v-if="getGiftForRank(index)" class="flex items-center gap-1 text-xs">
             <span>{{ getGiftForRank(index)!.name }}</span>
-            <span class="text-[10px] opacity-60"></span>
+            <span class="text-[10px] opacity-60"> = {{ getGiftForRank(index)!.price }} TON </span>
           </div>
         </div>
-
-        <!-- RANK -->
-        <!-- <div class="flex flex-col items-center gap-1 font-bold leading-none">
-          <CupIcon v-if="index === 0" class="w-6 text-orange-400" />
-          <CupIcon v-else-if="index === 1" class="w-6 text-slate-400" />
-          <CupIcon v-else-if="index === 2" class="w-6 text-[#C67747]" />
-          <h1 v-else>#{{ index + 1 }}</h1>
-
-          <p class="text-xs">{{ getRankCoins(index).toLocaleString() }} coins</p>
-
-          <p class="text-[10px] opacity-60">
-            = {{ (getRankCoins(index) / (withdrawRate ?? Infinity)).toFixed(2) }} TON
-          </p>
-        </div> -->
       </div>
     </div>
 
